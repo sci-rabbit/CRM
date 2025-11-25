@@ -22,7 +22,7 @@ class OperatorRepository(AsyncRepository[Operator]):
 
     async def list_available_for_source(self, source_id: int):
         active_q = (
-            select(func.count(Interaction.id).label("load"))
+            select(func.count(Interaction.id).label("current_load"))
             .where(
                 Interaction.is_active == True, Interaction.operator_id == Operator.id
             )
