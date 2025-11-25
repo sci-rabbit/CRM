@@ -14,7 +14,6 @@ class OperatorCreate(OperatorBase):
 
 
 class OperatorUpdate(BaseModel):
-    name: Optional[str] = None
     is_active: Optional[bool] = None
     limit: Optional[int] = None
 
