@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,14 +13,19 @@ class OperatorService:
     async def get_available_for_source(self, source_id: int):
         return await self.repo.list_available_for_source(source_id)
 
-    async def create_operator(self, name: str, is_active: bool, limit: int) -> Operator:
+    async def create_operator(
+        self,
+        name: str,
+        is_active: bool,
+        limit: int,
+    ) -> Operator:
         return await self.repo.create(
             name=name,
             is_active=is_active,
             limit=limit,
         )
 
-    async def list_operators(self) -> List[Operator]:
+    async def list_operators(self) -> list[Operator]:
         return list(await self.repo.list())
 
     async def update_operator(

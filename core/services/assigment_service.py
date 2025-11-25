@@ -37,27 +37,25 @@ class AssignmentService:
         await self.session.commit()
         return interaction
 
-
     def _weighted_round_robin(
         self,
         source_id: int,
-        operators: list[Operator]
+        operators: list[Operator],
     ) -> int:
+
         candidates = []
 
         for op in operators:
-            cfg = next(
-                (c for c in op.source_configs if c.source_id == source_id),
-                None
-            )
+            cfg = next((c for c in op.source_configs if c.source_id == source_id), None)
             if not cfg:
                 continue
 
             weight = cfg.weight
             current_load = getattr(op, "current_load", 0)
 
-            score = current_load / weight
-            candidates.append((score, op.id))
+            score = current_load / weight if weight > 0 else float("inf")
 
-        candidates.sort(key=lambda x: x[0])
-        return candidates[0][1]
+            candidates.append((score, weight, op.id))
+
+        candidates.sort(key=lambda x: (x[0], x[1]))
+        return candidates[0][2]
